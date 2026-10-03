@@ -62,7 +62,7 @@ telegram_app.add_handler(CommandHandler("services", services))
 import threading
 
 def run_bot():
-    telegram_app.run_polling()
+    telegram_app.run_polling(stop_signals=None)
 
 if __name__ == "__main__":
     threading.Thread(target=run_bot, daemon=True).start()
