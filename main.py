@@ -36,7 +36,7 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("API returned an unexpected response.")
             return
 
-        msg = "📋 Services (50% markup applied)\n\n"
+        msg = "📋 Available Services\n\n"
 
         for service in data[:10]:
             try:
