@@ -58,7 +58,6 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
 telegram_app = Application.builder().token(BOT_TOKEN).build()
 telegram_app.add_handler(CommandHandler("start", start))
 telegram_app.add_handler(CommandHandler("services", services))
-telegram_app.add_handler(CommandHandler("balance", balance))
 
 Python
 async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
