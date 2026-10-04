@@ -4,7 +4,13 @@ import requests
 import threading
 
 from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+    MessageHandler,
+    filters
+)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 API_KEY = os.getenv("FOLLOWPANNEL_API_KEY")
@@ -38,6 +44,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     try:
         response = requests.post(
             API_URL,
@@ -58,7 +65,7 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         msg = "📋 Available Services\n\n"
 
-        for service in data[:10]:
+        for service in data[:10\]:
             try:
                 provider_price = float(service["rate"])
                 sell_price = round(provider_price * 1.5, 4)
@@ -79,6 +86,76 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+async def menu_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    text = update.message.text
+
+    if text == "🚀 New Order":
+
+        keyboard = [
+            ["📘 Facebook", "📸 Instagram"],
+            ["🎵 TikTok", "📨 Telegram"],
+            ["▶️ YouTube", "💎 Diamond League (🚧 Soon)"],
+            ["❤️ TikTok Likes + Views 🇰🇭 (🚧 Soon)", "👑 Gemini Premium (🚧 Soon)"],
+            ["🎯 TikTok Likes 🇰🇭 (🚧 Soon)", "🎬 CapCut Pro (🚧 Soon)"],
+            ["🎨 Canva Pro (🚧 Soon)"],
+            ["❌ Cancel"]
+        ]
+
+        reply_markup = ReplyKeyboardMarkup(
+            keyboard,
+            resize_keyboard=True
+        )
+
+        await update.message.reply_text(
+            "🚀 Please select a service category:",
+            reply_markup=reply_markup
+        )
+
+    elif text in [
+        "💎 Diamond League(🚧 Soon)",
+        "❤️ TikTok Likes + Views 🇰🇭 (🚧 Soon)",
+        "👑 Gemini Premium (🚧 Soon)",
+        "🎯 TikTok Likes 🇰🇭 (🚧 Soon)",
+        "🎬 CapCut Pro (🚧 Soon)",
+        "🎨 Canva Pro (🚧 Soon)"
+    ]:
+
+        await update.message.reply_text(
+            "🚧 Coming Soon"
+        )
+
+    elif text == "❌ Cancel":
+
+        keyboard = [
+            ["🚀 New Order", "💰 Add Funds"],
+            ["👤 My Account", "📦 Order History"],
+            ["🔍 Track Order", "🎧 Support"]
+        ]
+
+        reply_markup = ReplyKeyboardMarkup(
+            keyboard,
+            resize_keyboard=True
+        )
+
+        await update.message.reply_text(
+            "Main Menu",
+            reply_markup=reply_markup
+        )
+
+    elif text in [
+        "📘 Facebook",
+        "📸 Instagram",
+        "🎵 TikTok",
+        "📨 Telegram",
+        "▶️ YouTube"
+    ]:
+
+        await update.message.reply_text(
+            f"{text}\n\nCategories coming next."
+        )
+
+
 telegram_app = Application.builder().token(BOT_TOKEN).build()
 
 telegram_app.add_handler(
@@ -87,6 +164,13 @@ telegram_app.add_handler(
 
 telegram_app.add_handler(
     CommandHandler("services", services)
+)
+
+telegram_app.add_handler(
+    MessageHandler(
+        filters.TEXT & ~filters.COMMAND,
+        menu_buttons
+    )
 )
 
 
