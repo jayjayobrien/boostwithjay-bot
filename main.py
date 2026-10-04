@@ -62,26 +62,26 @@ telegram_app.add_handler(CommandHandler("balance", balance))
 
 Python
 async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
-try:
-response = requests.post(
-API_URL,
-data={
-"key": API_KEY,
-"action": "balance"
-},
-timeout=30
-)
- 
-data = response.json()
- 
-await update.message.reply_text(
-f"💰 Provider Balance\n\n"
-f"Balance: ${data['balance']}\n"
-f"Currency: {data['currency']}"
-)
- 
-except Exception as e:
-await update.message.reply_text(f"Error: {e}")
+    try:
+        response = requests.post(
+            API_URL,
+            data={
+                "key": API_KEY,
+                "action": "balance"
+            },
+            timeout=30
+        )
+
+        data = response.json()
+
+        await update.message.reply_text(
+            f"💰 Provider Balance\n\n"
+            f"Balance: ${data['balance']}\n"
+            f"Currency: {data['currency']}"
+        )
+
+    except Exception as e:
+        await update.message.reply_text(f"Error: {e}")
 
 import threading
 
