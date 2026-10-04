@@ -81,7 +81,7 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(msg)
 
     except Exception as e:
-        await update.message.reply_text(
+        await update.message.eply_text(
             f"Error: {e}"
         )
 
@@ -113,7 +113,7 @@ async def menu_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif text in [
-        "💎 Diamond League(🚧 Soon)",
+        "💎 Diamond League (🚧 Soon)",
         "❤️ TikTok Likes + Views 🇰🇭 (🚧 Soon)",
         "👑 Gemini Premium (🚧 Soon)",
         "🎯 TikTok Likes 🇰🇭 (🚧 Soon)",
