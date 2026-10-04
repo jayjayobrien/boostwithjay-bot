@@ -58,6 +58,30 @@ async def services(update: Update, context: ContextTypes.DEFAULT_TYPE):
 telegram_app = Application.builder().token(BOT_TOKEN).build()
 telegram_app.add_handler(CommandHandler("start", start))
 telegram_app.add_handler(CommandHandler("services", services))
+telegram_app.add_handler(CommandHandler("balance", balance))
+
+Python
+async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
+try:
+response = requests.post(
+API_URL,
+data={
+"key": API_KEY,
+"action": "balance"
+},
+timeout=30
+)
+ 
+data = response.json()
+ 
+await update.message.reply_text(
+f"💰 Provider Balance\n\n"
+f"Balance: ${data['balance']}\n"
+f"Currency: {data['currency']}"
+)
+ 
+except Exception as e:
+await update.message.reply_text(f"Error: {e}")
 
 import threading
 
